@@ -2,14 +2,14 @@
 
 import {Router} from 'express'
 import { errorHandler } from '../error-handler'
-import { checkBalance, me, updateBalance } from '../controllers/users'
+import { getBalanceById, getCurrentBalance, updateBalanceById } from '../controllers/users'
 import authMiddleware from '../middlewares/auth'
 import adminMiddleware from '../middlewares/admin'
 
 const balanceRoutes:Router = Router()
 
-balanceRoutes.get('/checkBalance',[authMiddleware,adminMiddleware], errorHandler(checkBalance))
-balanceRoutes.put('/updateBalance',[authMiddleware,adminMiddleware], errorHandler(updateBalance))
-balanceRoutes.post('/me', [authMiddleware] ,errorHandler(me))
+balanceRoutes.get('/checkBalance/:id',[authMiddleware,adminMiddleware], errorHandler(getBalanceById))
+balanceRoutes.put('/updateBalance/:id',[authMiddleware,adminMiddleware], errorHandler(updateBalanceById))
+balanceRoutes.post('/myBalance', [authMiddleware] ,errorHandler(getCurrentBalance))
 
 export default balanceRoutes

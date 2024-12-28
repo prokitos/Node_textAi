@@ -8,9 +8,9 @@ import adminMiddleware from '../middlewares/admin'
 
 const aiRoutes:Router = Router()
 
-aiRoutes.post('/chat',[authMiddleware], errorHandler(chatWithModel))
+aiRoutes.post('/chat', errorHandler(chatWithModel))
 aiRoutes.post('/addModel', [authMiddleware,adminMiddleware], errorHandler(newModel))
-aiRoutes.delete('/removeModel', [authMiddleware,adminMiddleware], errorHandler(removeModel))
-aiRoutes.put('/updateModel', [authMiddleware,adminMiddleware], errorHandler(updateModel))
+aiRoutes.delete('/removeModel/:id', [authMiddleware,adminMiddleware], errorHandler(removeModel))
+aiRoutes.put('/updateModel/:id', [authMiddleware,adminMiddleware], errorHandler(updateModel))
 
 export default aiRoutes

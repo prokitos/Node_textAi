@@ -26,4 +26,4 @@ app.listen(PORT, () => {console.log("app work")})
 
 
 
-// npm start
+// npm start   ||   node src/index.js  

@@ -34,7 +34,7 @@ model User {
 model Model {
   id Int @id @default(autoincrement())
   name String 
-  rate_for_hundred Float @default(10)
+  rate_for_hundred Decimal @db.Decimal(10, 3) @default(10)
   
   @@map("models")
 }

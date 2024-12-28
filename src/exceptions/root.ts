@@ -1,16 +1,15 @@
+// базовый класс ошибок
 
 export class HttpException extends Error {
     message: string;
-    errorCode:  any;
+    errorCode:  ErrorCode;
     statusCode: number;
-    errors: ErrorCode;
 
-    constructor(message: string, errorCode: ErrorCode, statusCode:number, error:any) {
+    constructor(message: string, errorCode: ErrorCode, statusCode:number) {
         super(message)
         this.message = message
         this.errorCode = errorCode
         this.statusCode = statusCode
-        this.errors = error
     }
 }
 
