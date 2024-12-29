@@ -7,6 +7,7 @@ import { BadRequestException } from '../exceptions/baseException'
 import { ErrorCode } from '../exceptions/root'
 import { JWT_SECRET } from '../secrets'
 import jwt from 'jsonwebtoken'
+import { $Enums } from '@prisma/client'
 
 
 export const signup = async (req:Request,res:Response, next:NextFunction) => {
@@ -35,6 +36,7 @@ export const signup = async (req:Request,res:Response, next:NextFunction) => {
 
 }
 
+
 export const login = async (req:Request,res:Response) => {
 
     const {email,password} = req.body
@@ -57,15 +59,42 @@ export const login = async (req:Request,res:Response) => {
 
 }
 
+export const debugSignup = async (req:Request,res:Response, next:NextFunction) => {
+
+    const {email,password,name} = req.body
+
+    if (!email || !password || !name) { 
+        throw new BadRequestException('empty fields!',ErrorCode.BAD_REQUEST)
+    }
+    if (password.length < 6) {
+        throw new BadRequestException('password must be at least 6 characters long', ErrorCode.BAD_REQUEST)
+    }
+
+    let user = await prismaClient.user.findFirst({where: {email:email}})
+    if (user) {
+        throw new BadRequestException('user already exist',ErrorCode.BAD_REQUEST)
+    } 
+    user = await prismaClient.user.create({
+        data:{
+            name,
+            email,
+            password: hashSync(password,10),
+            role: $Enums.Role.Admin
+        }
+    })
+    res.json(user)
+
+}
+
 export const getBalanceById = async (req:Request,res:Response) => {
 
     try {
-        const product = await prismaClient.user.findFirstOrThrow({
+        const user = await prismaClient.user.findFirstOrThrow({
             where: {
                 id: +req.params.id,
             },
         })
-        res.json(product)
+        res.json(user)
     } catch(err) {
         throw new BadRequestException("User not found",ErrorCode.NOT_FOUND)
     }
@@ -75,17 +104,14 @@ export const getBalanceById = async (req:Request,res:Response) => {
 export const updateBalanceById = async (req:Request,res:Response) => {
 
     try {
-        const product = req.body
-        if(product.tags){
-            product.tags = product.tags.join(',')
-        }
-        const updateProduct = await prismaClient.user.update({
+        const user = req.body
+        const updateUser = await prismaClient.user.update({
             where: {
                 id: +req.params.id,  
             },
-            data: product
+            data: user
         })
-        res.json(updateProduct)
+        res.json(updateUser)
     } catch(err) {
         throw new BadRequestException("user not found",ErrorCode.NOT_FOUND)
     }

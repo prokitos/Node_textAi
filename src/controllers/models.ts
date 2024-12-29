@@ -5,6 +5,7 @@ import { prismaClient } from '..'
 import { BadRequestException } from '../exceptions/baseException'
 import { ErrorCode } from '../exceptions/root'
 import axios from 'axios'
+import { EXTERNAL_URL } from '../secrets'
 
 
 export const newModel = async (req:Request,res:Response, next:NextFunction) => {
@@ -56,43 +57,50 @@ export const updateModel = async (req:Request,res:Response, next:NextFunction) =
 
 export const chatWithModel = async (req:Request,res:Response, next:NextFunction) => {
 
-    res.writeHead(200, {
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive'
-    });
+    const { messages, model } = req.body;
 
-    const sendEvent = (data : any) => {
-        res.write(`data: ${JSON.stringify(data)}\n\n`);
-    };
+    let user = req.user
+    if (user.credits <= 0) {
+        throw new BadRequestException('user dont have credits', ErrorCode.NOT_FOUND)
+    }
 
-    const fetchData = async () => {
-        try {
-            const response = await axios.get('http://localhost:8002/info', {
-                responseType: 'stream'
-            });
+    let tempModel = await prismaClient.model.findFirst({where: {name:model}})
+    if (!tempModel) {
+        throw new BadRequestException('model not found', ErrorCode.NOT_FOUND)
+    } 
+    let multiplier:any = tempModel.rate_for_hundred
 
-            response.data.on('data', (chunk : any) => {
-                // Отправка данных клиенту при получении их от API
-                sendEvent({ data: chunk.toString() });
-            });
+    try {
+        const response = await axios.post(EXTERNAL_URL, {
+            message: messages,
+            model: model,
+           //  responseType: 'stream'
+        });
 
-            response.data.on('end', () => {
-                console.log('Stream ended');
-                res.end();
-            });
+        const { usage, choices } = response.data ;
+        const message = choices  
 
-            response.data.on('error', (error : any) => {
-                console.error('Error in stream:', error);
-                res.end();
-            });
-        } catch (error) {
-            console.error('Error fetching data from API:', error);
-            res.end();
-        }
-    };
+        
+        user.credits = user.credits - (multiplier / (100 / usage.total_tokens))
+        
+        await prismaClient.user.update({
+            where: {
+                id: user.id,  
+            },
+            data: user
+        })
+        
+        res.json({
+            status: 'success',
+            data: message,
+        });
 
-    fetchData();
-
+    } catch (error) {
+        console.error('Error sending data to API:', error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Failed to send data to API'
+        });
+    }
 
 }

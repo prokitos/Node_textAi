@@ -10,6 +10,6 @@ const balanceRoutes:Router = Router()
 
 balanceRoutes.get('/checkBalance/:id',[authMiddleware,adminMiddleware], errorHandler(getBalanceById))
 balanceRoutes.put('/updateBalance/:id',[authMiddleware,adminMiddleware], errorHandler(updateBalanceById))
-balanceRoutes.post('/myBalance', [authMiddleware] ,errorHandler(getCurrentBalance))
+balanceRoutes.get('/myBalance', [authMiddleware] ,errorHandler(getCurrentBalance))
 
 export default balanceRoutes

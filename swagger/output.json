@@ -1,0 +1,552 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "chat API",
+    "description": "My chat API",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3001",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/auth/signup": {
+      "post": {
+        "description": "create a new user",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "user body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterUser"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Register response",
+            "schema": {
+              "$ref": "#/definitions/RegisterResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "description": "login in accaount and get token",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "user body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginAdmin"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Login response",
+            "schema": {
+              "$ref": "#/definitions/LoginResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/debugSignup": {
+      "post": {
+        "description": "create a new admin",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "admin body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterAdmin"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Register response",
+            "schema": {
+              "$ref": "#/definitions/RegisterResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/balance/myBalance": {
+      "get": {
+        "description": "get current balance",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "user token",
+            "type": "string",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczNTQ5OTI0M30.MF7BmzHa5G4bZ1Pwr5-9emI3WIr9soF6k3jG-dbIXvg"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Balance response",
+            "schema": {
+              "$ref": "#/definitions/RegisterResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/balance/checkBalance/{id}": {
+      "get": {
+        "description": "get custom balance",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "user ID",
+            "schema": {
+              "type": "number",
+              "example": 1
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "user token",
+            "type": "string",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczNTQ5OTI0M30.MF7BmzHa5G4bZ1Pwr5-9emI3WIr9soF6k3jG-dbIXvg"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Balance response",
+            "schema": {
+              "$ref": "#/definitions/RegisterResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/balance/updateBalance/{id}": {
+      "put": {
+        "description": "update custom balance",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "user ID",
+            "schema": {
+              "type": "number",
+              "example": 1
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "user token",
+            "type": "string",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczNTQ5OTI0M30.MF7BmzHa5G4bZ1Pwr5-9emI3WIr9soF6k3jG-dbIXvg"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Balance response",
+            "schema": {
+              "$ref": "#/definitions/RegisterResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/ai/chat": {
+      "post": {
+        "description": "chat with ai",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "user token",
+            "type": "string",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczNTQ5OTI0M30.MF7BmzHa5G4bZ1Pwr5-9emI3WIr9soF6k3jG-dbIXvg"
+            }
+          },
+          {
+            "name": "ai",
+            "in": "body",
+            "description": "ai body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ChatAccess"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Chat response",
+            "schema": {
+              "$ref": "#/definitions/ChatResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/ai/addModel": {
+      "post": {
+        "description": "create a new model",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "user token",
+            "type": "string",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczNTQ5OTI0M30.MF7BmzHa5G4bZ1Pwr5-9emI3WIr9soF6k3jG-dbIXvg"
+            }
+          },
+          {
+            "name": "model",
+            "in": "body",
+            "description": "model body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewModel"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Model response",
+            "schema": {
+              "$ref": "#/definitions/ModelResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/ai/removeModel/{id}": {
+      "delete": {
+        "description": "delete model",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "model ID",
+            "schema": {
+              "type": "number",
+              "example": 1
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "user token",
+            "type": "string",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczNTQ5OTI0M30.MF7BmzHa5G4bZ1Pwr5-9emI3WIr9soF6k3jG-dbIXvg"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Model response",
+            "schema": {
+              "$ref": "#/definitions/ModelResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/ai/updateModel/{id}": {
+      "put": {
+        "description": "update model",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "model ID",
+            "schema": {
+              "type": "number",
+              "example": 1
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "user token",
+            "type": "string",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTczNTQ5OTI0M30.MF7BmzHa5G4bZ1Pwr5-9emI3WIr9soF6k3jG-dbIXvg"
+            }
+          },
+          {
+            "name": "model",
+            "in": "body",
+            "description": "model params to change",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewModel"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Model response",
+            "schema": {
+              "$ref": "#/definitions/ModelResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "RegisterUser": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "example@example.com"
+        },
+        "name": {
+          "type": "string",
+          "example": "john"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456jamin"
+        }
+      }
+    },
+    "RegisterAdmin": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "example@examples.com"
+        },
+        "name": {
+          "type": "string",
+          "example": "john"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456jamin"
+        }
+      }
+    },
+    "LoginAdmin": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "example@examples.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456jamin"
+        }
+      }
+    },
+    "RegisterResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "john"
+        },
+        "email": {
+          "type": "string",
+          "example": "example@examples.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "$2b$10$eoRYiACX5BEshA77G6n2VOsRfqr4lJyEqTI8FOd9w5ouawuXY4osK"
+        },
+        "role": {
+          "type": "string",
+          "example": "Admin"
+        },
+        "credits": {
+          "type": "number",
+          "example": 0
+        },
+        "created_a": {
+          "type": "string",
+          "example": "2024-12-27"
+        },
+        "updated_at": {
+          "type": "string",
+          "example": "2024-12-27"
+        }
+      }
+    },
+    "LoginResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "example": "john"
+            },
+            "email": {
+              "type": "string",
+              "example": "example@exampless.com"
+            },
+            "password": {
+              "type": "string",
+              "example": "$2b$10$eoRYiACX5BEshA77G6n2VOsRfqr4lJyEqTI8FOd9w5ouawuXY4osK"
+            },
+            "role": {
+              "type": "string",
+              "example": "Admin"
+            },
+            "credits": {
+              "type": "number",
+              "example": 0
+            },
+            "created_at": {
+              "type": "string",
+              "example": "2024-12-27"
+            },
+            "updated_at": {
+              "type": "string",
+              "example": "2024-12-27"
+            }
+          }
+        },
+        "token": {
+          "type": "string",
+          "example": "zzzzzz.yyyyyy.xxxxx"
+        }
+      }
+    },
+    "NewModel": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "gpt4o"
+        },
+        "rate_for_hundred": {
+          "type": "number",
+          "example": 10
+        }
+      }
+    },
+    "ModelResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "example": 1
+        },
+        "name": {
+          "type": "string",
+          "example": "gpt4o"
+        },
+        "rate_for_hundred": {
+          "type": "string",
+          "example": "10"
+        }
+      }
+    },
+    "ChatAccess": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "example": "gpt4o"
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "role": {
+                "type": "string",
+                "example": "user"
+              },
+              "content": {
+                "type": "string",
+                "example": "another some text"
+              }
+            }
+          }
+        }
+      }
+    },
+    "ChatResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "success"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "index": {
+                "type": "number",
+                "example": 2
+              },
+              "message": {
+                "type": "string",
+                "example": "second message"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
